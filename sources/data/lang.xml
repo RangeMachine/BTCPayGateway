@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language>
+ <app key="btcpay" version="10000">
+  <word key="__app_btcpay" js="0">BTCPay Gateway</word>
+  <word key="gateway__btcpay" js="0">BTCPay</word>
+  <word key="btcpay_api_url" js="0">API URL</word>
+  <word key="btcpay_api_url_desc" js="0"><![CDATA[Gateway API URL without end slash. Example: <a href='https://btcpayjungle.com' target='_blank'>https://btcpayjungle.com</a>]]></word>
+  <word key="btcpay_access_token" js="0">Access token</word>
+  <word key="btcpay_access_token_desc" js="0">Gateway access token, the line under &quot;Authorization: Basic&quot; words.</word>
+  <word key="btcpay_ipn_logging" js="0">IPN logging</word>
+  <word key="btcpay_instructions" js="0">User instructions</word>
+  <word key="btcpay_instructions_placeholder" js="0">Message user gets in invoice page while transaction being confirmed</word>
+  <word key="btcpay_invalid_api_url" js="0">Invalid API URL</word>
+  <word key="btcpay_invalid_access_token" js="0">Invalid access token</word>
+  <word key="btcpay_internal_error" js="0">Internal error</word>
+ </app>
+</language>
