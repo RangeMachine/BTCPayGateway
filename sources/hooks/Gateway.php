@@ -19,14 +19,28 @@ class btcpay_hook_Gateway extends _HOOK_CLASS_
 		{
 			try
 			{
-				$array = parent::gateways();
-		        $array['btcpay'] = 'IPS\btcpay\Gateway';
-	
-		      	return $array;
+				try
+				{
+					$array = parent::gateways();
+			        $array['btcpay'] = 'IPS\btcpay\Gateway';
+		
+			      	return $array;
+				}
+				catch (\RuntimeException $e)
+				{
+					if (method_exists(get_parent_class(), __FUNCTION__))
+					{
+						return \call_user_func_array('parent::' . __FUNCTION__, \func_get_args());
+					}
+					else
+					{
+						throw $e;
+					}
+				}
 			}
 			catch (\RuntimeException $e)
 			{
-				if (method_exists(get_parent_class(), __FUNCTION__))
+				if ( method_exists(get_parent_class(), __FUNCTION__))
 				{
 					return \call_user_func_array('parent::' . __FUNCTION__, \func_get_args());
 				}
@@ -36,11 +50,11 @@ class btcpay_hook_Gateway extends _HOOK_CLASS_
 				}
 			}
 		}
-		catch (\RuntimeException $e)
+		catch ( \RuntimeException $e )
 		{
-			if ( method_exists(get_parent_class(), __FUNCTION__))
+			if ( method_exists( get_parent_class(), __FUNCTION__ ) )
 			{
-				return \call_user_func_array('parent::' . __FUNCTION__, \func_get_args());
+				return \call_user_func_array( 'parent::' . __FUNCTION__, \func_get_args() );
 			}
 			else
 			{

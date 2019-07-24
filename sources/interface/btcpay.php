@@ -22,6 +22,11 @@ try
 }
 catch (\OutOfRangeException $e)
 {
+	if ($settings['ipn_logging'])
+	{
+		\IPS\Log::log('Transaction not found', 'btcpay_ipn_exception');
+	}
+
 	\IPS\Output::i()->sendOutput('', 500);
 }
 
@@ -31,9 +36,11 @@ try
 
 	if ($settings['allowed_ip'] !== '')
 	{
-		if ((string) $_SERVER['REMOTE_ADDR'] != $settings['allowed_ip'])
+		$ipAddress = \IPS\Request::i()->ipAddress();
+
+		if (\IPS\Request::i()->ipAddress() != $settings['allowed_ip'])
 		{
-			\IPS\Output::i()->sendOutput('', 500);
+			throw new \Exception("Blocked access for IP {$ipAddress}", 500);
 		}
 	}
 
@@ -41,7 +48,7 @@ try
 
 	if ($request === FALSE || empty($request)) 
 	{
-		throw new \Exception('Error reading POST data', 403);
+		throw new \Exception('Error reading POST data', 500);
 	}
 
 	$params = json_decode($request);
