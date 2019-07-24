@@ -43,9 +43,17 @@ class _Gateway extends \IPS\nexus\Gateway
 	 */
 	public function auth(\IPS\nexus\Transaction $transaction, $values, \IPS\nexus\Fraud\MaxMind\Request $maxMind = NULL, $recurrings = array(), $source = NULL)
 	{
-		$transaction->save();
-
 		$settings = json_decode($this->settings, TRUE);
+
+		if ($settings['allowed_groups'] !== 'all')
+		{
+			if (!$transaction->member->inGroup($settings['allowed_groups']))
+			{
+				throw new \LogicException($transaction->member->language()->get('btcpay_wrong_group'), 200);
+			}
+		}
+
+		$transaction->save();
 		$summary = $transaction->invoice->summary();
 
 		foreach ($summary['items'] as $item)
@@ -53,9 +61,9 @@ class _Gateway extends \IPS\nexus\Gateway
 			$productNames[] = $item->quantity .' x '. $item->name;
 		}
 
-		$params = array (
+		$params = array(
 		  'price'				=> $transaction->amount->amount,
-		  'currency'			=> (string) $transaction->amount->currency,
+		  'currency'			=> $transaction->amount->currency,
 		  'orderId'				=> (string) $transaction->invoice->id,
 		  'itemDesc'			=> implode(', ', $productNames),
 		  'fullNotifications'	=> TRUE,
@@ -105,7 +113,20 @@ class _Gateway extends \IPS\nexus\Gateway
 		$form->add(new \IPS\Helpers\Form\Text('btcpay_access_token', isset($settings['access_token']) ? $settings['access_token'] : '', TRUE));
 		$form->add(new \IPS\Helpers\Form\Text('btcpay_allowed_ip', isset($settings['allowed_ip']) ? $settings['allowed_ip'] : '', FALSE));
 		$form->add(new \IPS\Helpers\Form\YesNo('btcpay_ipn_logging', isset($settings['ipn_logging']) ? $settings['ipn_logging'] : 0, TRUE));
+		
 		$form->add(new \IPS\Helpers\Form\Translatable('btcpay_instructions', NULL, TRUE, array('app' => 'nexus', 'key' => ($this->id ? "nexus_gateway_{$this->id}_ins" : NULL), 'editor' => array('app' => 'nexus', 'key' => 'Admin', 'autoSaveKey' => ($this->id ? "nexus-gateway-{$this->id}" : "nexus-new-gateway" ), 'attachIds' => $this->id ? array($this->id, NULL, 'description') : NULL, 'minimize' => 'btcpay_instructions_placeholder'))));
+
+		$form->add( new \IPS\Helpers\Form\Select(
+			'btcpay_allowed_groups',
+			isset($settings['allowed_groups']) ? $settings['allowed_groups'] : 'all',
+			false,
+			array(
+				'options' 		=> array_combine(array_keys(\IPS\Member\Group::groups()), array_map(function($_group) { return (string) $_group; }, \IPS\Member\Group::groups())),
+				'multiple' 		=> true,
+				'unlimited' 	=> 'all',
+				'unlimitedLang' => 'all_groups'
+			)
+		));
 	}
 
 	/**
@@ -119,12 +140,14 @@ class _Gateway extends \IPS\nexus\Gateway
 		if (isset($values['btcpay_instructions']))
 		{
 			\IPS\Lang::saveCustom('nexus', "nexus_gateway_{$this->id}_ins", $values['btcpay_instructions']);
+
 			unset($values['btcpay_instructions']);
 		}
 
 		if (!$this->id)
 		{
 			$this->save();
+
 			\IPS\File::claimAttachments('nexus_gateway_new', $this->id, NULL, 'gateway', TRUE);
 		}
 

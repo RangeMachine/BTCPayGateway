@@ -15,4 +15,6 @@ $lang = array(
 	'btcpay_invalid_api_url'			=> "Invalid API URL",
 	'btcpay_invalid_access_token'		=> "Invalid access token",
 	'btcpay_internal_error'				=> "Internal error",
+	'btcpay_allowed_groups'				=> "Available to member groups",
+	'btcpay_wrong_group'				=> "You are not allowed to use this payment method"
 );

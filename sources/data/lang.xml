@@ -4,14 +4,18 @@
   <word key="__app_btcpay" js="0">BTCPay Gateway</word>
   <word key="gateway__btcpay" js="0">BTCPay</word>
   <word key="btcpay_api_url" js="0">API URL</word>
-  <word key="btcpay_api_url_desc" js="0"><![CDATA[Gateway API URL without end slash. Example: <a href='https://btcpayjungle.com' target='_blank'>https://btcpayjungle.com</a>]]></word>
+  <word key="btcpay_api_url_desc" js="0"><![CDATA[Gateway API URL with end slash, example: <a href='https://btcpayserver.org/' target='_blank'>https://btcpayserver.org/</a>.]]></word>
   <word key="btcpay_access_token" js="0">Access token</word>
   <word key="btcpay_access_token_desc" js="0">Gateway access token, the line under &quot;Authorization: Basic&quot; words.</word>
+  <word key="btcpay_allowed_ip" js="0">Allowed IP Address</word>
+  <word key="btcpay_allowed_ip_desc" js="0">Specify which IP address can make IPN calls, leave empty for any.</word>
   <word key="btcpay_ipn_logging" js="0">IPN logging</word>
   <word key="btcpay_instructions" js="0">User instructions</word>
   <word key="btcpay_instructions_placeholder" js="0">Message user gets in invoice page while transaction being confirmed</word>
   <word key="btcpay_invalid_api_url" js="0">Invalid API URL</word>
   <word key="btcpay_invalid_access_token" js="0">Invalid access token</word>
   <word key="btcpay_internal_error" js="0">Internal error</word>
+  <word key="btcpay_allowed_groups" js="0">Available to member groups</word>
+  <word key="btcpay_wrong_group" js="0">You are not allowed to use this payment method</word>
  </app>
 </language>

@@ -29,7 +29,7 @@ try
 {
 	$settings = json_decode($transaction->method->settings, TRUE);	
 
-	if ($settings['allowed_ip'] != '')
+	if ($settings['allowed_ip'] !== '')
 	{
 		if ((string) $_SERVER['REMOTE_ADDR'] != $settings['allowed_ip'])
 		{
@@ -46,7 +46,7 @@ try
 
 	$params = json_decode($request);
 
-	if ($params->status != 'paid' && $params->status != 'confirmed')
+	if ($params->status !== 'paid' && $params->status !== 'confirmed')
 	{
 		\IPS\Output::i()->sendOutput('', 200);
 	}
@@ -63,7 +63,7 @@ try
 		throw new \IPS\Http\Request\Exception($url, 500);
 	}
 
-	if ($data->data->status == 'paid')
+	if ($data->data->status === 'paid')
 	{
 		if ($transaction->status != \IPS\nexus\Transaction::STATUS_WAITING)
 		{
@@ -74,7 +74,7 @@ try
 
 		\IPS\Output::i()->sendOutput('', 200);	
 	}
-	else if ($data->data->status == 'confirmed')
+	else if ($data->data->status === 'confirmed')
 	{
 		$transaction->gw_id = $data->data->orderId;
 		
