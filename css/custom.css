@@ -1,104 +1,117 @@
 html {
-  background-color: #111316 !important;
+    background-color: #111316 !important;
 }
 
 .modal.page {
-  background-color: #111316;
+    background-color: #111316;
 }
 
 .top-header {
-  background-color: #151517;
+    background-color: #151517;
 }
 
-.top-header .timer-row__progress-bar {
-  background: #4a4a54;
-}
+    .top-header .timer-row__progress-bar {
+        background: #4a4a54;
+    }
 
-.top-header .timer-row {
-  background: #111316;
-}
+    .top-header .timer-row {
+        background: #111316;
+    }
 
 .payment-tabs__slider {
-	background: #4a4a54;
+    background: #4a4a54;
 }
 
 .action-button {
-  color: #fff !important;
-  background-image: linear-gradient(to right, #111316, #111316);
-  border-color: #4a4a54;
+    color: #fff !important;
+    background-image: linear-gradient(to right, #111316, #111316);
+    border-color: #4a4a54;
 }
 
-.action-button:active {
-  background-image: linear-gradient(to right, #111316, #111316);
-}
+    .action-button:active {
+        background-image: linear-gradient(to right, #111316, #111316);
+    }
 
 .invoice {
-  background-color: #15181c;
+    background-color: #15181c;
 }
 
 .expired__body {
-  color: #fff;
+    color: #fff;
+}
+
+.payment__currencies {
+    border: 1px solid #565d6e;
+}
+
+.prettydropdown > ul {
+    border: 1px solid #565d6e;
 }
 
 .currency-selection {
-  background-color: #15181c;
-  border-bottom: 1px solid #565d6e;
-  color: #fff;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  height: auto;
+    background-color: #15181c;
+    border-bottom: 1px solid #565d6e;
+    color: #fff;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    height: auto;
 }
 
 line-items {
-  border-top: 1px solid #565d6e !important;
+    border-top: 1px solid #565d6e !important;
 }
 
 .line-items {
-  background-color: #151517;
-  color: #fff !important;
+    background-color: #151517;
+    color: #fff !important;
 }
 
 .buyerTotalLine {
-  border-top: 1px solid #202224;
-  background-color: #15181c;
-  color: #fff;
+    border-top: 1px solid #202224;
+    background-color: #15181c;
+    color: #fff;
 }
 
 .payment-tabs {
-  background-color: #15181c;
-  color: #fff;
-  border-top: 1px solid #565d6e;
-  border-bottom: 1px solid #565d6e;
+    background-color: #15181c;
+    color: #fff;
+    border-top: 1px solid #565d6e;
+    border-bottom: 1px solid #565d6e;
 }
 
 .payment-tabs__tab .active {
-  color: #fff;
+    color: #fff;
 }
 
 .payment-tabs__tab.active {
-  color: #fff;
+    color: #fff;
 }
 
 a {
-  color: #fff !important;
+    color: #fff !important;
+}
+
+.vexmenuitem a {
+    color: #565d6e !important;
 }
 
 canvas {
-  border: 5px solid #fff;
+    border: 5px solid #565d6e;
 }
 
 #prettydropdown-DefaultLang ul {
-  color: #fff !important;
-  background-color: #111316 !important;
+    color: #fff !important;
+    background-color: #111316 !important;
 }
 
 .manual__step-one__header {
-  color: #fff;
+    color: #fff;
 }
 
 .manual__step-one__instructions {
-  color: #fff;
+    color: #fff;
 }
+
 .manual__step-two__instructions {
-  color: #fff;
+    color: #fff;
 }
