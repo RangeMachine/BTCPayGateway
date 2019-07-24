@@ -114,9 +114,21 @@ class _Gateway extends \IPS\nexus\Gateway
 		$form->add(new \IPS\Helpers\Form\Text('btcpay_allowed_ip', isset($settings['allowed_ip']) ? $settings['allowed_ip'] : '', FALSE));
 		$form->add(new \IPS\Helpers\Form\YesNo('btcpay_ipn_logging', isset($settings['ipn_logging']) ? $settings['ipn_logging'] : 0, TRUE));
 		
-		$form->add(new \IPS\Helpers\Form\Translatable('btcpay_instructions', NULL, TRUE, array('app' => 'nexus', 'key' => ($this->id ? "nexus_gateway_{$this->id}_ins" : NULL), 'editor' => array('app' => 'nexus', 'key' => 'Admin', 'autoSaveKey' => ($this->id ? "nexus-gateway-{$this->id}" : "nexus-new-gateway" ), 'attachIds' => $this->id ? array($this->id, NULL, 'description') : NULL, 'minimize' => 'btcpay_instructions_placeholder'))));
+		$form->add(new \IPS\Helpers\Form\Translatable(
+			'btcpay_instructions',
+			NULL,
+			TRUE, 
+			array(
+				'app' => 'nexus', 
+				'key' => ($this->id ? "nexus_gateway_{$this->id}_ins" : NULL),
+				'editor' => array('app' => 'nexus', 'key' => 'Admin', 'autoSaveKey' => ($this->id ? "nexus-gateway-{$this->id}" : "nexus-new-gateway"), 
+					'attachIds' => $this->id ? array($this->id, NULL, 'description') : NULL, 
+					'minimize' => 'btcpay_instructions_placeholder')
+				)
+			)
+		);
 
-		$form->add( new \IPS\Helpers\Form\Select(
+		$form->add(new \IPS\Helpers\Form\Select(
 			'btcpay_allowed_groups',
 			isset($settings['allowed_groups']) ? $settings['allowed_groups'] : 'all',
 			false,
