@@ -5,4 +5,4 @@ BTCPay Gateway for Invision Communty
 
 ### About plugin
 
-This gateway plugin for **Invision Community** for [**BTCPay Server**](https://btcpayserver.org/) payments processor.
+This is gateway plugin for **Invision Community** for [**BTCPay Server**](https://btcpayserver.org/) payments processor.
