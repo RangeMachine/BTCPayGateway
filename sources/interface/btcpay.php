@@ -22,18 +22,13 @@ try
 }
 catch (\OutOfRangeException $e)
 {
-	if ($settings['ipn_logging'])
-	{
-		\IPS\Log::log('Transaction not found', 'btcpay_ipn_exception');
-	}
-
 	\IPS\Output::i()->sendOutput('', 500);
 }
 
+$settings = json_decode($transaction->method->settings, TRUE);	
+
 try
 {
-	$settings = json_decode($transaction->method->settings, TRUE);	
-
 	if ($settings['allowed_ip'] !== '')
 	{
 		$ipAddress = \IPS\Request::i()->ipAddress();
