@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build>
+ <hook key="Gateway"><![CDATA[{"type":"C","class":"\\IPS\\nexus\\Gateway"}]]></hook>
+</build>

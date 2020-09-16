@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
- <app key="btcpay" version="10001">
+ <app key="btcpay" version="10002">
   <word key="__app_btcpay" js="0">BTCPay Gateway</word>
   <word key="gateway__btcpay" js="0">BTCPay</word>
   <word key="btcpay_api_url" js="0">API URL</word>
