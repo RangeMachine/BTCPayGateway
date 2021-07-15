@@ -30,6 +30,32 @@ class _Gateway extends \IPS\nexus\Gateway
 
 	/* !Payment Gateway */
 
+
+	/**
+	 * Check the gateway can process this...
+	 *
+	 * @param	$amount			\IPS\nexus\Money		The amount
+	 * @param	$billingAddress	\IPS\GeoLocation|NULL	The billing address, which may be NULL if one if not provided
+	 * @param	$customer		\IPS\nexus\Customer		The customer (Default NULL value is for backwards compatibility - it should always be provided.)
+	 * @param	array			$recurrings				Details about recurring costs
+	 * @see		<a href="https://stripe.com/docs/currencies">Supported Currencies</a>
+	 * @return	bool
+	 */
+	public function checkValidity(\IPS\nexus\Money $amount, ?\IPS\GeoLocation $billingAddress = NULL, ?\IPS\nexus\Customer $customer = NULL, $recurrings=array())
+	{
+      	$settings = json_decode($this->settings, TRUE);
+
+		if (isset($settings['paymethod_groups']))
+		{
+			if ($settings['paymethod_groups'] !== '*' AND !$customer->inGroup($settings['paymethod_groups']))
+			{
+				return FALSE;
+			}
+		}
+      
+		return parent::checkValidity($amount, $billingAddress, $customer, $recurrings);
+	}
+
 	/**
 	 * Authorize
 	 *
@@ -43,16 +69,6 @@ class _Gateway extends \IPS\nexus\Gateway
 	 */
 	public function auth(\IPS\nexus\Transaction $transaction, $values, \IPS\nexus\Fraud\MaxMind\Request $maxMind = NULL, $recurrings = array(), $source = NULL)
 	{
-		$settings = json_decode($this->settings, TRUE);
-
-		if ($settings['allowed_groups'] !== 'all')
-		{
-			if (!$transaction->member->inGroup($settings['allowed_groups']))
-			{
-				throw new \LogicException($transaction->member->language()->get('btcpay_wrong_group'), 200);
-			}
-		}
-
 		$transaction->save();
 		$summary = $transaction->invoice->summary();
 
@@ -62,14 +78,16 @@ class _Gateway extends \IPS\nexus\Gateway
 		}
 
 		$params = array(
-		  'price'				=> $transaction->amount->amount,
-		  'currency'			=> $transaction->amount->currency,
-		  'orderId'				=> (string) $transaction->invoice->id,
-		  'itemDesc'			=> implode(', ', $productNames),
-		  'fullNotifications'	=> TRUE,
-		  'redirectURL'			=> (string) \IPS\Http\Url::internal("app=nexus&controller=checkout&do=transaction&id=&t={$transaction->id}", 'front', 'nexus_checkout', \IPS\Settings::i()->nexus_https),		  
-		  'notificationUrl'		=> \IPS\Settings::i()->base_url . "applications/btcpay/interface/btcpay.php?&t={$transaction->id}"
+			'price'				=> $transaction->amount->amount,
+			'currency'			=> $transaction->amount->currency,
+			'orderId'				=> (string) $transaction->invoice->id,
+			'itemDesc'			=> implode(', ', $productNames),
+			'fullNotifications'	=> TRUE,
+			'redirectURL'			=> (string) \IPS\Http\Url::internal("app=nexus&controller=checkout&do=transaction&id=&t={$transaction->id}", 'front', 'nexus_checkout', \IPS\Settings::i()->nexus_https),		  
+			'notificationUrl'		=> (string) \IPS\Http\Url::internal("app=btcpay&controller=ipn&do=transaction&t={$transaction->id}", 'front', 'btcpay_ipn', \IPS\Settings::i()->nexus_https)
 		);
+
+		$settings = json_decode($this->settings, TRUE);
 				
 		try
 		{
@@ -100,6 +118,24 @@ class _Gateway extends \IPS\nexus\Gateway
 	/* !ACP Configuration */
 	
 	/**
+	 * [Node] Add/Edit Form
+	 *
+	 * @param	\IPS\Helpers\Form	$form	The form
+	 * @return	void
+	 */
+	public function form(&$form)
+	{
+		$form->addHeader('btcpay_basic_settings');
+
+		$form->add(new \IPS\Helpers\Form\Translatable('paymethod_name', NULL, TRUE, array( 'app' => 'nexus', 'key' => "nexus_paymethod_{$this->id}" ) ) );
+		$form->add(new \IPS\Helpers\Form\Select('paymethod_countries', ($this->id and $this->countries !== '*') ? explode(',', $this->countries) : '*', FALSE, array('options' => array_map(function($val)
+		{
+			return "country-{$val}";
+		}, array_combine(\IPS\GeoLocation::$countries, \IPS\GeoLocation::$countries)), 'multiple' => TRUE, 'unlimited' => '*', 'unlimitedLang' => 'no_restriction')));
+		$this->settings( $form );
+	}
+
+	/**
 	 * Settings
 	 *
 	 * @param	\IPS\Helpers\Form	$form	The form
@@ -108,12 +144,16 @@ class _Gateway extends \IPS\nexus\Gateway
 	public function settings(&$form)
 	{		
 		$settings = json_decode($this->settings, TRUE);
+		
+		$form->addHeader('btcpay_ipn_settings');
 
 		$form->add(new \IPS\Helpers\Form\Text('btcpay_api_url', isset($settings['api_url']) ? $settings['api_url'] : '', TRUE));
 		$form->add(new \IPS\Helpers\Form\Text('btcpay_access_token', isset($settings['access_token']) ? $settings['access_token'] : '', TRUE));
 		$form->add(new \IPS\Helpers\Form\Text('btcpay_allowed_ip', isset($settings['allowed_ip']) ? $settings['allowed_ip'] : '', FALSE));
 		$form->add(new \IPS\Helpers\Form\YesNo('btcpay_ipn_logging', isset($settings['ipn_logging']) ? $settings['ipn_logging'] : 0, TRUE));
 		
+		$form->addHeader('btcpay_user_settings');
+
 		$form->add(new \IPS\Helpers\Form\Translatable(
 			'btcpay_instructions',
 			NULL,
@@ -128,15 +168,17 @@ class _Gateway extends \IPS\nexus\Gateway
 			)
 		);
 
+		$form->addHeader('btcpay_groups_settings');
+
 		$form->add(new \IPS\Helpers\Form\Select(
-			'btcpay_allowed_groups',
-			isset($settings['allowed_groups']) ? $settings['allowed_groups'] : 'all',
+			'btcpay_paymethod_groups',
+			isset($settings['paymethod_groups']) ? $settings['paymethod_groups'] : '*',
 			false,
 			array(
-				'options' 		=> array_combine(array_keys(\IPS\Member\Group::groups()), array_map(function($_group) { return (string) $_group; }, \IPS\Member\Group::groups())),
+				'options' 		=> array_combine(array_keys(\IPS\Member\Group::groups( ) ), array_map(function($_group) { return (string) $_group; }, \IPS\Member\Group::groups())),
 				'multiple' 		=> true,
-				'unlimited' 	=> 'all',
-				'unlimitedLang' => 'all_groups'
+				'unlimited' 	=> '*',
+				'unlimitedLang' => 'no_restriction'
 			)
 		));
 	}
@@ -174,8 +216,7 @@ class _Gateway extends \IPS\nexus\Gateway
 	 * @throws	\InvalidArgumentException
 	 */
 	public function testSettings($settings = array())
-	{
-		try
+	{		try
 		{
 			$url = \IPS\Http\Url::external($settings['api_url'] . "invoices")
 				->request(10)
@@ -193,7 +234,7 @@ class _Gateway extends \IPS\nexus\Gateway
 		{
 			throw new \InvalidArgumentException(\IPS\Member::loggedIn()->language()->get('btcpay_invalid_access_token'), 200);
 		}
-
+		
 		return $settings;
 	}
 }

@@ -1,0 +1,21 @@
+{
+    "normal": {
+        "added": [
+            "btcpay_basic_settings",
+            "btcpay_ipn_settings",
+            "btcpay_user_settings",
+            "btcpay_paymethod_groups",
+            "btcpay_paymethod_groups_desc"
+        ],
+        "edited": [],
+        "removed": [
+            "btcpay_allowed_groups",
+            "btcpay_wrong_group"
+        ]
+    },
+    "js": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}

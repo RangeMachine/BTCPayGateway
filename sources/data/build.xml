@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <build>
+ <module key="front/ipn"><![CDATA[{"default_controller":"","protected":0,"default":0}]]></module>
  <hook key="Gateway"><![CDATA[{"type":"C","class":"\\IPS\\nexus\\Gateway"}]]></hook>
+ <hook key="FriendlyURL"><![CDATA[{"type":"C","class":"\\IPS\\Http\\Url\\Friendly"}]]></hook>
 </build>

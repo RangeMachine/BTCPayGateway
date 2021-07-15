@@ -1,1 +1,9 @@
-[]
+{
+    "front": {
+        "ipn": {
+            "default_controller": "",
+            "protected": 0,
+            "default": 0
+        }
+    }
+}

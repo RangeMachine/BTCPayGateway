@@ -2,5 +2,9 @@
     "Gateway": {
         "type": "C",
         "class": "\\IPS\\nexus\\Gateway"
+    },
+    "FriendlyURL": {
+        "type": "C",
+        "class": "\\IPS\\Http\\Url\\Friendly"
     }
 }
