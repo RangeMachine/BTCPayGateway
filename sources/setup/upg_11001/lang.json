@@ -1,0 +1,16 @@
+{
+    "normal": {
+        "added": [
+            "module__btcpay_ipn"
+        ],
+        "edited": [
+            "btcpay_allowed_ip"
+        ],
+        "removed": []
+    },
+    "js": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}
