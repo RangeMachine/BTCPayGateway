@@ -133,6 +133,7 @@ class _Gateway extends \IPS\nexus\Gateway
 			return "country-{$val}";
 		}, array_combine(\IPS\GeoLocation::$countries, \IPS\GeoLocation::$countries)), 'multiple' => TRUE, 'unlimited' => '*', 'unlimitedLang' => 'no_restriction')));
 		$this->settings( $form );
+		parent::form( $form );
 	}
 
 	/**
