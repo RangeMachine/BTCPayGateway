@@ -132,7 +132,10 @@ class _Gateway extends \IPS\nexus\Gateway
 		{
 			return "country-{$val}";
 		}, array_combine(\IPS\GeoLocation::$countries, \IPS\GeoLocation::$countries)), 'multiple' => TRUE, 'unlimited' => '*', 'unlimitedLang' => 'no_restriction')));
+		
 		$this->settings( $form );
+
+		parent::form( $form );
 	}
 
 	/**
@@ -216,7 +219,8 @@ class _Gateway extends \IPS\nexus\Gateway
 	 * @throws	\InvalidArgumentException
 	 */
 	public function testSettings($settings = array())
-	{		try
+	{		
+		try
 		{
 			$url = \IPS\Http\Url::external($settings['api_url'] . "invoices")
 				->request(10)

@@ -1,9 +1,9 @@
 {
-    "id": 11001,
-    "name": "1.1.1",
+    "id": 11002,
+    "name": "1.1.2",
     "steps": {
         "queries": false,
-        "lang": true,
+        "lang": false,
         "theme": false,
         "themeSettings": false,
         "javascript": false,

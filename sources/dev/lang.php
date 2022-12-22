@@ -3,6 +3,7 @@
 $lang = array(
 	'__app_btcpay'						=> "BTCPay Gateway",
 	'gateway__btcpay'					=> "BTCPay",
+	'module__btcpay_ipn'				=> "IPN",
 	'btcpay_basic_settings'				=> "Basic Settings",
 	'btcpay_ipn_settings'				=> "IPN Settings",
 	'btcpay_api_url'					=> "API URL",

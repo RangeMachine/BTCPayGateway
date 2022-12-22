@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
- <app key="btcpay" version="11000">
+ <app key="btcpay" version="11002">
   <word key="__app_btcpay" js="0">BTCPay Gateway</word>
   <word key="gateway__btcpay" js="0">BTCPay</word>
+  <word key="module__btcpay_ipn" js="0">IPN</word>
   <word key="btcpay_basic_settings" js="0">Basic Settings</word>
   <word key="btcpay_ipn_settings" js="0">IPN Settings</word>
   <word key="btcpay_api_url" js="0">API URL</word>
